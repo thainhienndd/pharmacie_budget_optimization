@@ -51,7 +51,7 @@ def display_graph_depense_salaire():
     make_graph_salaires(echeancier_cum)
 
 def make_graph_salaires(echeancier_cum):
-    st.header("Dépense des salaires dans le temps")
+    st.header("Evolution Dépenses Salaires")
     with st.container(border=True):
         fig = px.area(
             echeancier_cum,
