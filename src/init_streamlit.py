@@ -2,10 +2,6 @@ import streamlit as st
 import pandas as pd
 from input_parameters import *
 
-import os
-dir_path = os.path.dirname(os.path.realpath(__file__))
-print(dir_path)
-
 def initialize_streamlit():
     if 'factures' not in st.session_state:
         st.session_state.factures = pd.read_excel(factures_path)
