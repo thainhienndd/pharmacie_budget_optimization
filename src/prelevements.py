@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import add_new_df_line
+from src.utils import add_new_df_line
 from datetime import datetime, timedelta
 import time
 import pandas as pd

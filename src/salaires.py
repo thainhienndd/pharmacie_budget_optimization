@@ -1,8 +1,8 @@
 import streamlit as st
 import time
-from utils import add_new_df_line
-from main_dashboard import make_echeancier
-from main_dashboard import add_salaire_to_echeancier
+from src.utils import add_new_df_line
+from src.main_dashboard import make_echeancier
+from src.main_dashboard import add_salaire_to_echeancier
 import plotly.express as px
 
 def display_salaires():

@@ -1,10 +1,10 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from factures import display_facture
-from init_streamlit import initialize_streamlit
-from salaires import display_salaires
-from prelevements import display_prelevement
-from main_dashboard import main_dashboard
+from src.factures import display_facture
+from src.init_streamlit import initialize_streamlit
+from src.salaires import display_salaires
+from src.prelevements import display_prelevement
+from src.main_dashboard import main_dashboard
 
 
 st.set_page_config(layout='wide')

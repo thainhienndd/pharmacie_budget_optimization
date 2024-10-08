@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from input_parameters import *
+from src.input_parameters import *
 
 def initialize_streamlit():
     if 'factures' not in st.session_state:
