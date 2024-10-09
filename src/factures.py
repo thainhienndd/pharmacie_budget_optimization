@@ -1,5 +1,5 @@
 import streamlit as st
-from src.utils import add_new_df_line, make_graph_cumul
+from src.utils import add_new_df_line, make_graph_cumul_2
 from datetime import datetime, timedelta
 import time
 import pandas as pd
@@ -60,4 +60,4 @@ def display_graph_depense_facture():
     echeancier = add_factures_to_echeancier(echeancier)
     echeancier_g = echeancier.groupby('Date').sum().reset_index()
     echeancier_cum = echeancier_g.set_index('Date').cumsum()
-    make_graph_cumul(echeancier_cum, 'Evolution Dépenses Factures', ['montant_facture'])
+    make_graph_cumul_2(echeancier_cum, 'Evolution Dépenses Factures', ['montant_facture'])

@@ -1,11 +1,12 @@
 import streamlit as st
 from datetime import datetime, timedelta
 import pandas as pd
-import plotly.express as px
-from src.utils import preprocess_prelevements
+from src.utils import preprocess_prelevements, make_graph_cumul_2
 
 jour_prelevement = 1
 
+def get_initial_tresorery():
+    return 40000
 
 def main_dashboard():
     echeancier = make_echeancier()
@@ -13,7 +14,9 @@ def main_dashboard():
     echeancier = add_factures_to_echeancier(echeancier)
     echeancier = add_prelevements_to_echeancier(echeancier)
     echeancier_cum = group_echeancier_per_depense(echeancier)
-    build_cumulative_graph(echeancier_cum)
+    initial_tresory = get_initial_tresorery()
+    echeancier_cum['Trésorerie'] = initial_tresory
+    make_graph_cumul_2(echeancier_cum, "Main Dashboard",['Trésorerie', "Salaires", "Prélèvements", "Factures"])
 
 
 def make_echeancier():
@@ -60,29 +63,7 @@ def group_echeancier_per_depense(echeancier):
     echeancier_g = echeancier.groupby('Date').sum().reset_index()
     echeancier_cum = echeancier_g.set_index('Date').cumsum()
     echeancier_cum_min = echeancier_cum.drop(['salaires_net', 'Urssaf'], axis=1)
+    echeancier_cum_min = echeancier_cum_min.rename({'montant_prelevement': 'Prélèvements',
+                                                    'montant_facture': 'Factures',
+                                                    'salaire_total': 'Salaires'}, axis=1)
     return echeancier_cum_min
-
-def build_cumulative_graph(echeancier_cum):
-    st.header("Main Dashboard")
-
-    fig = px.area(
-        echeancier_cum,
-        x=echeancier_cum.index,  # Assumant que l'index est la colonne des dates
-        y=["salaire_total", "montant_prelevement", "montant_facture"],
-        labels={"value": "Montants cumulés", "x": "Date"},
-        title="Évolution des Dépenses",
-        template="plotly_dark",  # Thème sombre pour une meilleure esthétique
-        color_discrete_sequence=px.colors.sequential.Viridis  # Palette de couleurs améliorée
-    )
-
-    # Améliorations de mise en forme
-    fig.update_layout(
-        legend_title_text="Sources de flux financiers",
-        xaxis_title="Date",
-        yaxis_title="Montants cumulés",
-        hovermode="x unified",  # Montrer toutes les valeurs lorsque l'on survole une date
-        margin=dict(l=40, r=40, t=40, b=40),
-    )
-
-    # Intégrer le graphique dans Streamlit
-    st.plotly_chart(fig, use_container_width=True)  # Rendre le graphique responsive

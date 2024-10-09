@@ -1,5 +1,5 @@
 import streamlit as st
-from src.utils import add_new_df_line, make_graph_cumul, preprocess_prelevements
+from src.utils import add_new_df_line, preprocess_prelevements, make_graph_cumul_2
 from datetime import datetime, timedelta
 import time
 import pandas as pd
@@ -50,4 +50,4 @@ def display_graph_depense_prelevement():
     echeancier = add_prelevements_to_echeancier(echeancier)
     echeancier_g = echeancier.groupby('Date').sum().reset_index()
     echeancier_cum = echeancier_g.set_index('Date').cumsum()
-    make_graph_cumul(echeancier_cum, 'Evolution Dépenses Prélèvements', ['montant_prelevement'])
+    make_graph_cumul_2(echeancier_cum, 'Evolution Dépenses Prélèvements', ['montant_prelevement'])
