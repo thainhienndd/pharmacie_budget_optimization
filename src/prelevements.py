@@ -1,26 +1,29 @@
 import streamlit as st
-from src.utils import add_new_df_line
+from src.utils import add_new_df_line, make_graph_cumul, preprocess_prelevements
 from datetime import datetime, timedelta
 import time
 import pandas as pd
+from src.main_dashboard import make_echeancier, add_prelevements_to_echeancier
+from src.input_parameters import prelevements_path
 
 def display_prelevement():
     st.title("Prélèvements")
     preprocess_prelevements()
     with st.container(border=True):
         st.session_state.prelevements = st.data_editor(st.session_state.prelevements, num_rows="dynamic", hide_index=True)
-    col1, col2 = st.columns(2)
+    col1, col2, _, _, _, _ = st.columns(6)
     with col1:
         if st.button('Save modifications'):
             with st.spinner():
                 time.sleep(1.5)
-                st.session_state.prelevements.to_excel('../data/sorties/prelevements.xlsx', index=False)
+                st.session_state.prelevements.to_excel(prelevements_path, index=False)
                 st.caption('Les prélèvements sont à jour !')
     with col2:
         add_prelevement_module()
+    display_graph_depense_prelevement()
 
 def add_prelevement_module():
-    with st.popover("Ajouter Un Prélèvement", icon="💶"):
+    with st.popover("Ajouter Prélèvement", icon="💶"):
         fournisseur = st.selectbox(label='Est-ce un fournisseur ?', options=['oui', 'non'])
         entite = st.selectbox(label="Quelle est l'entité concernée ?",
                               options=st.session_state.prelevements['Entité'].unique())
@@ -39,12 +42,12 @@ def add_prelevement_module():
             with st.spinner():
                 time.sleep(1.5)
                 st.session_state.prelevements = add_new_df_line(st.session_state.prelevements, added_prelevement)
-                st.session_state.prelevements.to_excel('../data/sorties/prelevements.xlsx', index=False)
+                st.session_state.prelevements.to_excel(prelevements_path, index=False)
                 st.caption('New line added !')
 
-def preprocess_prelevements():
-    st.session_state.prelevements['montant_prelevement'] = - abs(st.session_state.prelevements['montant_prelevement'].apply(
-        lambda x: float(str(x).replace(',', '.').replace('€', '').replace(' ', ''))))
-    st.session_state.prelevements['Date'] = pd.to_datetime(pd.to_datetime(st.session_state.prelevements['Date']).dt.strftime('%Y-%m-%d')).dt.date
-    st.session_state.prelevements['Echéance'] = pd.to_datetime(pd.to_datetime(st.session_state.prelevements['Echéance']).dt.strftime('%Y-%m-%d')).dt.date
-    st.session_state.prelevements['Date de paiement'] = pd.to_datetime(pd.to_datetime(st.session_state.prelevements['Date de paiement']).dt.strftime('%Y-%m-%d')).dt.date
+def display_graph_depense_prelevement():
+    echeancier = make_echeancier()
+    echeancier = add_prelevements_to_echeancier(echeancier)
+    echeancier_g = echeancier.groupby('Date').sum().reset_index()
+    echeancier_cum = echeancier_g.set_index('Date').cumsum()
+    make_graph_cumul(echeancier_cum, 'Evolution Dépenses Prélèvements', ['montant_prelevement'])

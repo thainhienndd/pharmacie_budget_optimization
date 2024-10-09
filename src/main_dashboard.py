@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime, timedelta
 import pandas as pd
 import plotly.express as px
-from src.prelevements import preprocess_prelevements
+from src.utils import preprocess_prelevements
 
 jour_prelevement = 1
 
