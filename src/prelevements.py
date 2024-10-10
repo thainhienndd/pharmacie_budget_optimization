@@ -7,20 +7,23 @@ from src.main_dashboard import make_echeancier, add_prelevements_to_echeancier
 from src.input_parameters import prelevements_path
 
 def display_prelevement():
-    st.title("Prélèvements")
     preprocess_prelevements()
-    with st.container(border=True):
-        st.session_state.prelevements = st.data_editor(st.session_state.prelevements, num_rows="dynamic", hide_index=True)
-    col1, col2, _, _, _, _ = st.columns(6)
-    with col1:
-        if st.button('Save modifications'):
-            with st.spinner():
-                time.sleep(1.5)
-                st.session_state.prelevements.to_excel(prelevements_path, index=False)
-                st.caption('Les prélèvements sont à jour !')
-    with col2:
-        add_prelevement_module()
-    display_graph_depense_prelevement()
+    colf, cols = st.columns(2)
+    with colf:
+        st.header("Prélèvements")
+        with st.container(border=True):
+            st.session_state.prelevements = st.data_editor(st.session_state.prelevements, num_rows="dynamic", hide_index=True)
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button('Save modifications'):
+                with st.spinner():
+                    time.sleep(1.5)
+                    st.session_state.prelevements.to_excel(prelevements_path, index=False)
+                    st.caption('Les prélèvements sont à jour !')
+        with col2:
+            add_prelevement_module()
+    with cols:
+        display_graph_depense_prelevement()
 
 def add_prelevement_module():
     with st.popover("Ajouter Prélèvement", icon="💶"):

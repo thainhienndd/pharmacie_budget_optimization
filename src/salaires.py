@@ -11,7 +11,7 @@ def display_salaires():
         st.header('Salaires')
         with st.container(border=True):
             st.session_state.salaires = st.data_editor(st.session_state.salaires, num_rows="dynamic", hide_index=True)
-        col1, col2, _ = st.columns(3)
+        col1, col2= st.columns(2)
         with col1:
             if st.button('Save modifications'):
                 with st.spinner():

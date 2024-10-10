@@ -7,21 +7,24 @@ from src.main_dashboard import make_echeancier, add_factures_to_echeancier
 from src.input_parameters import factures_path
 
 def display_facture():
-    st.title("Factures")
     preprocess_factures()
-    with st.container(border=True):
-        st.session_state.factures = st.session_state.factures.sort_values(by='Date de paiement', ascending=False)
-        st.session_state.factures = st.data_editor(st.session_state.factures, num_rows="dynamic", hide_index=True)
-    col1, col2, _, _, _, _ = st.columns(6)
-    with col1:
-        if st.button('Save modifications'):
-            with st.spinner():
-                time.sleep(1.5)
-                st.session_state.factures.to_excel(factures_path, index=False)
-                st.caption('Les factures sont à jour !')
-    with col2:
-        add_facture_module()
-    display_graph_depense_facture()
+    colf, cols = st.columns(2)
+    with colf:
+        st.header("Factures")
+        with st.container(border=True):
+            st.session_state.factures = st.session_state.factures.sort_values(by='Date de paiement', ascending=False)
+            st.session_state.factures = st.data_editor(st.session_state.factures, num_rows="dynamic", hide_index=True)
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button('Save modifications'):
+                with st.spinner():
+                    time.sleep(1.5)
+                    st.session_state.factures.to_excel(factures_path, index=False)
+                    st.caption('Les factures sont à jour !')
+        with col2:
+            add_facture_module()
+    with cols:
+        display_graph_depense_facture()
 
 def add_facture_module():
     with st.popover("Ajouter Facture", icon="💶"):
