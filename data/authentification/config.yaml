@@ -1,0 +1,17 @@
+credentials:
+  usernames:
+    jean:
+      email: chatenet.jean@gmail.com
+      name: Jean Chatenet
+      password: $2b$12$9zPgI9rEobifOIvyvj1EnOYLcpdXpM9I20wICTeMbv6yeHyC0lT8S
+    thainhien:
+      email: tnndd92@gmail.com
+      name: Thai-Nhien NGUYEN DINH DO
+      password: $2b$12$4EHUjajiR0yoz1hU/b2DpOA4R.JiPITTAyoygSomj5r6fc8tNb7VC
+cookie:
+  expiry_days: 30
+  key: random_signature_key # Must be string
+  name: random_cookie_name
+preauthorized:
+  emails:
+  - tnndd92@gmail.com
