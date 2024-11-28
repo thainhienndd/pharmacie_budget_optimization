@@ -1,23 +1,9 @@
 import streamlit as st
-from datetime import datetime, timedelta
+from datetime import datetime
 import pandas as pd
-from src.utils import preprocess_prelevements, make_graph_cumul_2
-
+from datetime import timedelta
+from src.utils import preprocess_prelevements
 jour_prelevement = 1
-
-def get_initial_tresorery():
-    return 40000
-
-def main_dashboard():
-    echeancier = make_echeancier()
-    echeancier = add_salaire_to_echeancier(echeancier)
-    echeancier = add_factures_to_echeancier(echeancier)
-    echeancier = add_prelevements_to_echeancier(echeancier)
-    echeancier_cum = group_echeancier_per_depense(echeancier)
-    initial_tresory = get_initial_tresorery()
-    echeancier_cum['Trésorerie'] = initial_tresory
-    make_graph_cumul_2(echeancier_cum, "Main Dashboard",['Trésorerie', "Salaires", "Prélèvements", "Factures"])
-
 
 def make_echeancier():
     start_date = datetime.today()

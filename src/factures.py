@@ -3,7 +3,7 @@ from src.utils import add_new_df_line, make_graph_cumul_2
 from datetime import datetime, timedelta
 import time
 import pandas as pd
-from src.main_dashboard import make_echeancier, add_factures_to_echeancier
+from src.main_page.main_dashboard import make_echeancier, add_factures_to_echeancier
 from src.input_parameters import factures_path
 
 def display_facture():

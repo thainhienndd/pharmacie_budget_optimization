@@ -4,7 +4,8 @@ from src.factures import display_facture
 from src.init_streamlit import initialize_streamlit
 from src.salaires import display_salaires
 from src.prelevements import display_prelevement
-from src.main_dashboard import main_dashboard
+from src.main_page.main_dashboard import main_dashboard
+from src.credit_page.page_credit import page_credit
 
 
 st.set_page_config(layout='wide')
@@ -29,8 +30,8 @@ st.markdown("""
 initialize_streamlit()
 
 with st.sidebar:
-    selected_main = option_menu(None, ["Home", 'Paramètres'],
-        icons=['house', 'gear'], menu_icon="cast", default_index=0)
+    selected_main = option_menu(None, ["Home", 'Crédit'],
+        icons=['house', 'bank', 'gear'], menu_icon="cast", default_index=0)
 
     if selected_main == 'Paramètres':
         selected_main = option_menu('Parameters', ['Salaires', 'Factures', 'Prélèvements'])
@@ -39,11 +40,14 @@ with st.sidebar:
 if selected_main == 'Home':
     main_dashboard()
 
-if selected_main == 'Factures':
-    display_facture()
+if selected_main == 'Crédit':
+    page_credit()
 
-if selected_main == 'Salaires':
-    display_salaires()
-
-if selected_main == 'Prélèvements':
-    display_prelevement()
+# if selected_main == 'Factures':
+#     display_facture()
+#
+# if selected_main == 'Salaires':
+#     display_salaires()
+#
+# if selected_main == 'Prélèvements':
+#     display_prelevement()

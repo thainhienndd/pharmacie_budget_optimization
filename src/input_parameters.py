@@ -9,4 +9,6 @@ factures_path = prefix_path + 'sorties/factures.xlsx'
 salaires_path = prefix_path + 'sorties/salaires.xlsx'
 prelevements_path = prefix_path + 'sorties/prelevements.xlsx'
 
+ceapc_credit_path = 'data/banques/CEAPC_current_credit.csv'
+ceapc_debit_path = 'data/banques/CEAPC_current_debit.csv'
 
