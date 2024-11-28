@@ -4,9 +4,6 @@ from src.input_parameters import *
 from src.main_page.graph_treso import *
 import time
 
-credit_option_list = ['Caisses et mutuelles', 'CB', 'Espèces', 'Chéques', 'Clients', 'Laboratoires',
-                      'A définir ultérieurement']
-
 def get_initial_tresorery():
     return 40000
 
@@ -80,7 +77,7 @@ def get_new_credit_debit(ceapc, ceapc_new, is_credit=True):
         colname_operation: st.column_config.SelectboxColumn(
             colname_operation,
             width="medium",
-            options=credit_option_list,
+            options=st.session_state.credit_categorie_list.to_list(),
             required=True,
         ),
         operation_type_name: st.column_config.NumberColumn(

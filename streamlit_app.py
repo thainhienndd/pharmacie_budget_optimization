@@ -1,12 +1,11 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from src.factures import display_facture
 from src.init_streamlit import initialize_streamlit
-from src.salaires import display_salaires
-from src.prelevements import display_prelevement
 from src.main_page.main_dashboard import main_dashboard
 from src.credit_page.page_credit import page_credit
-
+from src.salaires import display_salaires
+from src.prelevements import display_prelevement
+from src.factures import display_facture
 
 st.set_page_config(layout='wide')
 
@@ -21,7 +20,7 @@ st.markdown("""
             .block-container {
                 padding-top: 0rem;
                 padding-bottom: 0rem;
-                padding-right: 0rem;
+                padding-right: 10rem;
             }
         </style>
 """, unsafe_allow_html=True)

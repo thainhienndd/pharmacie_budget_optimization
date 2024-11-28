@@ -16,4 +16,6 @@ def initialize_streamlit():
         unnamed_list = [name for name in st.session_state.ceapc_current_credit.columns if 'Unnamed' in name]
         if len(unnamed_list) > 0:
             st.session_state.ceapc_current_credit = st.session_state.ceapc_current_credit.drop(unnamed_list, axis=1)
+    if 'credit_cateogrie_list' not in st.session_state:
+        st.session_state.credit_categorie_list = pd.read_excel(credit_categorie_path)['credit_categorie']
 

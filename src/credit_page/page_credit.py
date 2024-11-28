@@ -6,6 +6,8 @@ from pandas.api.types import (
 )
 import pandas as pd
 import streamlit as st
+import time
+from src.input_parameters import *
 
 
 def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
@@ -18,11 +20,6 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Filtered dataframe
     """
-    # modify = st.checkbox("Add filters")
-    #
-    # if not modify:
-    #     return df
-
     df = df.copy()
 
     # Try to convert datetimes into a standard format (datetime, no timezone)
@@ -83,4 +80,32 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def page_credit():
-    st.dataframe(filter_dataframe(st.session_state['ceapc_current_credit']), hide_index=True)
+    _, _, _, _, _, _, _, col8 = st.columns(8)
+
+    with col8:
+        with (st.popover('Catégories', icon='⚙️')):
+            st.session_state.credit_categorie_list = st.data_editor(st.session_state.credit_categorie_list, hide_index=True, num_rows='dynamic')
+            if st.button('Valider', key='validate_new_categ'):
+                with st.spinner():
+                    time.sleep(1)
+                    st.session_state.credit_categorie_list.to_excel(credit_categorie_path)
+                    st.caption('Catégories mises à jour !')
+
+    st.data_editor(filter_dataframe(st.session_state['ceapc_current_credit']), hide_index=True,
+                   column_config={
+                       'Catégorie': st.column_config.SelectboxColumn(
+                           'Catégorie',
+                           width="medium",
+                           options=st.session_state.credit_categorie_list.to_list(),
+                           required=True,
+                       ),
+                       'Crédit': st.column_config.NumberColumn(
+                           "Montant (€)",
+                           step=1,
+                           format="%d€",
+                       ),
+                       'Date':st.column_config.DateColumn("Date",
+                                                          format="DD/MM/YYYY",
+                                                          step=1)
+                   }
+                   )
