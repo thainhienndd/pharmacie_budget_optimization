@@ -8,6 +8,72 @@ import pandas as pd
 import streamlit as st
 import time
 from src.input_parameters import *
+from datetime import datetime
+
+
+def page_credit():
+    display_monthly_credit()
+
+
+    modify_categories_parameters()
+    st.subheader('Filtres')
+
+    filtered_ceapc_credit = show_filtered_credit_sum()
+    show_filtered_dataframe(filtered_ceapc_credit)
+
+
+def display_monthly_credit():
+    st.title('Crédits')
+    month = datetime.now().strftime('%B')
+    year = datetime.now().strftime('%Y')
+    # formated_number_m_credit_ = '{:,}'.format(filtered_m_credit).replace(',', ' ')
+    # st.write(f"Total des crédits en {month} {year} : {formated_number_m_credit_}€")
+
+    # return formated_number_m_credit_, month, year
+
+
+def show_filtered_dataframe(filtered_ceapc_credit):
+    st.data_editor(filtered_ceapc_credit, hide_index=True,
+                   column_config={
+                       'Catégorie': st.column_config.SelectboxColumn(
+                           'Catégorie',
+                           width="medium",
+                           options=st.session_state.credit_categorie_list.to_list(),
+                           required=True,
+                       ),
+                       'Crédit': st.column_config.NumberColumn(
+                           "Montant (€)",
+                           step=1,
+                           format="%d€",
+                       ),
+                       'Date': st.column_config.DateColumn("Date",
+                                                           format="DD/MM/YYYY",
+                                                           step=1)
+                   }
+                   )
+
+
+def modify_categories_parameters():
+    _, _, _, _, _, _, _, col8 = st.columns(8)
+    with col8:
+        with (st.popover('Catégories', icon='⚙️')):
+            st.session_state.credit_categorie_list = st.data_editor(st.session_state.credit_categorie_list,
+                                                                    hide_index=True, num_rows='dynamic')
+            if st.button('Valider', key='validate_new_categ'):
+                with st.spinner():
+                    time.sleep(1)
+                    st.session_state.credit_categorie_list.to_excel(credit_categorie_path)
+                    st.caption('Catégories mises à jour !')
+
+
+def show_filtered_credit_sum():
+    filtered_ceapc_credit = filter_dataframe(st.session_state['ceapc_current_credit']).sort_values(by='Crédit',
+                                                                                                   ascending=False)
+    filtered_total_credit = int(filtered_ceapc_credit['Crédit'].sum())
+    formated_number_total_credit = '{:,}'.format(filtered_total_credit).replace(',', ' ')
+    st.write(f"Total des crédits sur les critères de recherches : **{formated_number_total_credit}**€")
+    return filtered_ceapc_credit
+
 
 
 def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
@@ -35,7 +101,7 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
     modification_container = st.container(border=True)
     with modification_container:
-        to_filter_columns = st.multiselect("Filter dataframe on", df.columns, default=['Date', 'Crédit'])
+        to_filter_columns = st.multiselect("Filtrer les résultats par rapport à", df.columns, default=['Date', 'Crédit'])
         for column in to_filter_columns:
             left, right = st.columns((1, 20))
             # Treat columns with < 10 unique values as categorical
@@ -51,16 +117,17 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
                 _max = float(df[column].max())
                 step = (_max - _min) / 100
                 user_num_input = right.slider(
-                    f"Values for {column}",
+                    f"Valeur du {column}",
                     min_value=_min,
                     max_value=_max,
                     value=(_min, _max),
                     step=step,
+                    format="%d€",
                 )
                 df = df[df[column].between(*user_num_input)]
             elif is_datetime64_any_dtype(df[column]):
                 user_date_input = right.date_input(
-                    f"Values for {column}",
+                    f"Dates",
                     value=(
                         df[column].min(),
                         df[column].max(),
@@ -76,36 +143,6 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
                 )
                 if user_text_input:
                     df = df[df[column].astype(str).str.contains(user_text_input)]
+    st.subheader('Tableau des crédits')
 
     return df
-
-def page_credit():
-    _, _, _, _, _, _, _, col8 = st.columns(8)
-
-    with col8:
-        with (st.popover('Catégories', icon='⚙️')):
-            st.session_state.credit_categorie_list = st.data_editor(st.session_state.credit_categorie_list, hide_index=True, num_rows='dynamic')
-            if st.button('Valider', key='validate_new_categ'):
-                with st.spinner():
-                    time.sleep(1)
-                    st.session_state.credit_categorie_list.to_excel(credit_categorie_path)
-                    st.caption('Catégories mises à jour !')
-
-    st.data_editor(filter_dataframe(st.session_state['ceapc_current_credit']), hide_index=True,
-                   column_config={
-                       'Catégorie': st.column_config.SelectboxColumn(
-                           'Catégorie',
-                           width="medium",
-                           options=st.session_state.credit_categorie_list.to_list(),
-                           required=True,
-                       ),
-                       'Crédit': st.column_config.NumberColumn(
-                           "Montant (€)",
-                           step=1,
-                           format="%d€",
-                       ),
-                       'Date':st.column_config.DateColumn("Date",
-                                                          format="DD/MM/YYYY",
-                                                          step=1)
-                   }
-                   )

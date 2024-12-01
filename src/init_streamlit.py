@@ -18,4 +18,6 @@ def initialize_streamlit():
             st.session_state.ceapc_current_credit = st.session_state.ceapc_current_credit.drop(unnamed_list, axis=1)
     if 'credit_cateogrie_list' not in st.session_state:
         st.session_state.credit_categorie_list = pd.read_excel(credit_categorie_path)['credit_categorie']
+    if 'debit_ceapc_validated' not in st.session_state:
+        st.session_state.debit_ceapc_validated = 'False'
 

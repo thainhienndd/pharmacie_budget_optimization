@@ -45,6 +45,13 @@ if st.session_state['authentication_status']:
     if selected_main == 'Crédit':
         page_credit()
 
+    st.markdown(
+        """<hr>
+        <p style="text-align: left; font-size: medium;">
+        <b>SIREN:</b> XXX
+        </p>
+        """, unsafe_allow_html=True
+    )
 # if selected_main == 'Factures':
 #     display_facture()
 #
