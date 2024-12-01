@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 from src.init_streamlit import initialize_streamlit
-from src.main_page.main_dashboard import main_dashboard
+from src.main_page.main_dashboard import main_dashboard_page
 from src.credit_page.page_credit import page_credit
 from src.authentification_page.page_authentification import authenticator_page
 from src.salaires import display_salaires
@@ -40,7 +40,7 @@ if st.session_state['authentication_status']:
 
 
     if selected_main == 'Home':
-        main_dashboard()
+        main_dashboard_page()
 
     if selected_main == 'Crédit':
         page_credit()
@@ -52,11 +52,3 @@ if st.session_state['authentication_status']:
         </p>
         """, unsafe_allow_html=True
     )
-# if selected_main == 'Factures':
-#     display_facture()
-#
-# if selected_main == 'Salaires':
-#     display_salaires()
-#
-# if selected_main == 'Prélèvements':
-#     display_prelevement()
