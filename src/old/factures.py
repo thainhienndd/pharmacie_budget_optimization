@@ -1,5 +1,5 @@
 import streamlit as st
-from src.utils import add_new_df_line, make_graph_cumul_2
+from src.old.utils import add_new_df_line, make_graph_cumul_2
 from datetime import datetime, timedelta
 import time
 import pandas as pd

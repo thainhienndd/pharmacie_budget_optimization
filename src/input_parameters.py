@@ -13,3 +13,4 @@ ceapc_credit_path = 'data/banques/CEAPC/CEAPC_current_credit.csv'
 ceapc_debit_path = 'data/banques/CEAPC/CEAPC_current_debit.csv'
 
 credit_categorie_path = 'data/parameters_lists/liste_catégorie.xlsx'
+debit_fournisseur_path = 'data/parameters_lists/liste_fournisseurs.xlsx'

@@ -7,7 +7,7 @@ def popover_uploader():
     with col1:
         with st.popover('🗂 Déposer les nouveaux fichiers', use_container_width=True):
             file_type = st.selectbox('Type de Fichier', ['CEAPC', 'CIC', 'DigiPharmacie'])
-            uploaded_file = st.file_uploader('Déposer le fichier', accept_multiple_files=False)
-            if uploaded_file is not None:
+            st.session_state.uploaded_file = st.file_uploader('Déposer le fichier', accept_multiple_files=False)
+            if st.session_state.uploaded_file is not None:
                 if file_type=='CEAPC':
-                    ceapc_treatment(uploaded_file)
+                    ceapc_treatment(st.session_state.uploaded_file)

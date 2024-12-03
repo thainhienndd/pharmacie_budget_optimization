@@ -26,9 +26,8 @@ def ceapc_credit_processing(ceapc_new, ceapc_credit):
                 save_ceapc_credit(ceapc_credit_new)
                 return ceapc_credit_new
 
-
-def save_ceapc_credit(ceapc_credit_new):
-    st.session_state.ceapc_current_credit = ceapc_credit_new
+def save_ceapc_credit(ceapc_new_credit):
+    st.session_state.ceapc_current_credit = ceapc_new_credit
     st.session_state.ceapc_current_credit['Date'] = pd.to_datetime(st.session_state.ceapc_current_credit['Date'])
     st.session_state.ceapc_current_credit.to_csv(ceapc_credit_path, sep=';', index=False)
     st.session_state.ceapc_current_credit = pd.read_csv(ceapc_credit_path, sep=';')

@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime
 import pandas as pd
 from datetime import timedelta
-from src.utils import preprocess_prelevements
+from src.old.utils import preprocess_prelevements
 jour_prelevement = 1
 
 def make_echeancier():

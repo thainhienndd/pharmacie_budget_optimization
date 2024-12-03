@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from src.utils import add_new_df_line, make_graph_cumul_2
+from src.old.utils import add_new_df_line, make_graph_cumul_2
 from src.main_page.main_dashboard import make_echeancier
 from src.main_page.main_dashboard import add_salaire_to_echeancier
 from src.input_parameters import salaires_path

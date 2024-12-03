@@ -4,9 +4,7 @@ from src.init_streamlit import initialize_streamlit
 from src.main_page.main_dashboard import main_dashboard_page
 from src.credit_page.page_credit import page_credit
 from src.authentification_page.page_authentification import authenticator_page
-from src.salaires import display_salaires
-from src.prelevements import display_prelevement
-from src.factures import display_facture
+from src.debit_page.page_debit import page_debit
 
 st.set_page_config(layout='wide')
 
@@ -32,8 +30,8 @@ if st.session_state['authentication_status']:
     initialize_streamlit()
 
     with st.sidebar:
-        selected_main = option_menu(None, ["Home", 'Crédit'],
-            icons=['house', 'bank', 'gear'], menu_icon="cast", default_index=0)
+        selected_main = option_menu(None, ["Home", 'Crédit', 'Débit'],
+            icons=['house', 'bank', 'bank2'], menu_icon="cast", default_index=0)
 
         if selected_main == 'Paramètres':
             selected_main = option_menu('Parameters', ['Salaires', 'Factures', 'Prélèvements'])
@@ -44,6 +42,9 @@ if st.session_state['authentication_status']:
 
     if selected_main == 'Crédit':
         page_credit()
+
+    if selected_main == 'Débit':
+        page_debit()
 
     st.markdown(
         """<hr>

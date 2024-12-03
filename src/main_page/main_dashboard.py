@@ -1,4 +1,4 @@
-from src.utils import make_graph_cumul_2
+from src.old.utils import make_graph_cumul_2
 from src.main_page.graph_treso import *
 from src.main_page.popover.popover_upload import popover_uploader
 
